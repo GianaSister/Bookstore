@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -14,15 +16,20 @@ public class Book {
 	private int Year;
 	private float Price;
 	
+	@ManyToOne
+	@JoinColumn(name="categoryid")
+	private Category category;
+	
 	public Book() {}
 		
-	public Book(String title, String author, String isbn, int year, float price) {
+	public Book(String title, String author, String isbn, int year, float price, Category category) {
 		super();
 		this.Title = title;
 		this.Author = author;
 		this.Isbn = isbn;
 		this.Year = year;
 		this.Price = price;
+		this.category = category;
 	}
 	
 	public long getId() {
@@ -64,11 +71,22 @@ public class Book {
 		Price = price;
 	}
 
-	@Override
-	public String toString() {
-		return "Book [Title=" + Title + ", Author=" + Author + ", Isbn=" + Isbn + ", Year=" + Year + ", Price=" + Price
-				+ "]";
+	public Category getCategory() {
+		return category;
 	}
 
-	
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+
+	@Override
+	public String toString() {
+		if (this.category != null)
+			return "Book [Title=" + Title + ", Author=" + Author + ", Isbn=" + Isbn + ", Year=" + Year + ", Price=" + Price
+				+ "]";
+		else
+			return "Book [Title=" + Title + ", Author=" + Author + ", Isbn=" + Isbn + ", Year=" + Year + ", Price=" + Price
+					+ ", Category=" + category + "]";
+	}	
 }
